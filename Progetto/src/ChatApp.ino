@@ -31,12 +31,6 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 
-  ////-->UNDER VOLTAGE PROTECTION<--//
-  //if (GetVolt() < 3.5){
-  //  UsrAlertLed(8);
-  //  ESP.deepSleep(0);  
-  //}
-
   //-->FILES<--//
   SPIFFS.begin();
   chatHtml = fileRead(chatFile);
@@ -44,9 +38,10 @@ void setup()
   UsrAlertLed(4);
 
   //-->NETWORK<--//
-  WiFi.mode(WIFI_AP);
-  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-  WiFi.softAP(wifiName, pwd, 1, true, 7);
+  WiFi.mode(WIFI_AP); //rendo l'ESP una stazione (Access Point)
+  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); //(IP, gataeway, netmask)
+  WiFi.softAP(wifiName, pwd, 1, true, 7); /*(SSID, password, canale, broadcastSSID, numero massimo connessioni). 
+                                            broadcastSSID vale true se voglio disabilitare il broadcast, quindi nascondere la rete, altrimenti false*/
   dnsServer.start(DNS_PORT, "*", apIP);
   webServer.begin();
   
@@ -139,7 +134,7 @@ void UsrAlertLed(int cicle)
 }
 float GetVolt(){
   battery = analogRead(A0);
-  return battery * (4.08 / 967); // 967 => 4.08
+  return battery * (4.08 / 967); // 967 => 4.08 
 }
 
 ///////////////////////
