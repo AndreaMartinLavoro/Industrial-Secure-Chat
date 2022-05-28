@@ -83,7 +83,7 @@ void HandleSendMessage()
   {
     String message = webServer.arg("message");
     fileWrite(messagesFile, message + "\n", "a+");
-    webServer.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+    webServer.sendHeader("Access-Control-Allow-Methods", "POST");
     webServer.sendHeader("Access-Control-Allow-Origin", "*");
     webServer.send(200, "text/plain", "Message Sent");
   }
