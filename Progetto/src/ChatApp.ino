@@ -77,6 +77,7 @@ void ShowChatPage()
 {
   webServer.send(200, "text/html", chatHtml);
 }
+
 void HandleSendMessage()
 {
   if (webServer.hasArg("message"))
@@ -88,6 +89,7 @@ void HandleSendMessage()
     webServer.send(200, "text/plain", "Message Sent");
   }
 }
+
 void ShowMessages()
 {
   String messages = fileRead(messagesFile);
@@ -112,6 +114,7 @@ void ShowStatus()
   webServer.send(200, "text/plain", batteryResult);
   UsrAlertLed(5);
 }
+
 void PowerOff()
 {
   webServer.send(200, "text/plain", "Goodbye");
