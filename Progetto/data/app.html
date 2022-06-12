@@ -428,7 +428,7 @@
 
 
       <input id="userId" autocomplete="off" placeholder="Inserisci lo USERNAME" />
-      <input id="key" autocomplete="off" placeholder="Inserisci la KEY" type="password"/>
+      <input id="key" autocomplete="off" placeholder="Inserisci la KEY" />
       <button onclick="setParam()">Entra</button>
     </div>
   </div>
@@ -546,12 +546,14 @@
 
       var dateTime = date + ' ' + time;
 
-      if (messageBox.value == "::batteria") {
+      if ((messageBox.value.toUpperCase() == "::BATTERIA")||(messageBox.value.toUpperCase() == "::BATTERY")) {
         battery();
-      } else if (messageBox.value == "::spegni") {
+      } else if ((messageBox.value.toUpperCase() == "::SPEGNI")||(messageBox.value.toUpperCase() == "::TURN OFF")) {
         shutdown();
-      } else if (messageBox.value == "::pulisci") {
+      } else if ((messageBox.value.toUpperCase() == "::PULISCI")||(messageBox.value.toUpperCase() == "::CLEAN")) {
         clearMessages();
+      } else if ((messageBox.value.toUpperCase() == "::AIUTO")||(messageBox.value.toUpperCase() == "::HELP")) {
+        alert("::batteria or ::battery\n::spegni or ::turn off\n::pulisci or ::clean");
       } else {
         var message = myCipher(username) + "§" + myCipher(messageBox.value) + "§" + myCipher(dateTime);
         xhr = new XMLHttpRequest();
@@ -593,7 +595,8 @@
       xhr.open('GET', 'http://10.10.10.1/status');
       xhr.onload = function () {
         if (xhr.status === 200) {
-          alert(hr.responseText.toString());
+          document.getElementById("m").value = "";
+          alert('Battery status: ' + xhr.responseText.toString());
         }
         else {
           alert('Request failed.  Returned status of ' + xhr.status);
@@ -606,7 +609,8 @@
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'http://10.10.10.1/powerOff');
       xhr.onload = function () {
-        console.log("Spegnimento in corso...");
+        document.getElementById("m").value = "";
+        alert("Shutdown in progress...");
       };
       xhr.send();
     }
@@ -616,7 +620,8 @@
       xhr.open('GET', 'http://10.10.10.1/clearMessages');
       xhr.onload = function () {
         if (xhr.status === 200) {
-          alert('Mamoria ripolita');
+          document.getElementById("m").value = "";
+          alert('The chat memory has been cleaned up!');
         }
         else {
           alert('Request failed.  Returned status of ' + xhr.status);
